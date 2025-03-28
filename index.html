@@ -63,9 +63,24 @@
       }
     }
 
+    .glitch {
+      display: inline-block;
+      animation: glitch 0.3s infinite;
+    }
+
+    @keyframes glitch {
+      0% { transform: translate(0); opacity: 1; }
+      20% { transform: translate(-1px, 1px); opacity: 0.8; }
+      40% { transform: translate(1px, -1px); opacity: 1; }
+      60% { transform: translate(-1px, 0); opacity: 0.9; }
+      80% { transform: translate(1px, 1px); opacity: 1; }
+      100% { transform: translate(0); opacity: 1; }
+    }
+
     @keyframes borderGlitch {
-      0%, 100% { box-shadow: 0 0 25px #00ffea; }
-      50% { box-shadow: 0 0 10px #ff0055, 0 0 20px #ff0055; border-color: #ff0055; }
+      0% { box-shadow: 0 0 25px #00ffea; border-color: #00ffea; }
+      50% { box-shadow: 0 0 15px #ff0055, 0 0 25px #ff0055; border-color: #ff0055; }
+      100% { box-shadow: 0 0 25px #00ffea; border-color: #00ffea; }
     }
   </style>
 </head>
@@ -73,33 +88,32 @@
   <canvas id="matrix"></canvas>
 
   <div class="window">
-    <div class="title-bar">🔒 SECURE TERMINAL - AUTHORIZED PERSONNEL ONLY</div>
+    <div class="title-bar">🔒 SECURE MILITARY TERMINAL - LEVEL 7 ACCESS</div>
     <div class="content" id="console"></div>
   </div>
 
   <script>
     const lines = [
-      "> SYSTEM BOOTING...",
-      "> Establishing secure connection",
-      "> Connection established with node-47.core.net",
-      "> Authenticating session... [OK]",
-      "> Decrypting message payload",
+      "> SYSTEM INITIALIZATION...",
+      "> SECURE PROTOCOL ENGAGED",
+      "> Linking satellite uplink... SUCCESS",
+      "> Authenticating user clearance... LEVEL 7 CONFIRMED",
+      "> Retrieving encrypted logs...",
       "",
-      "> ACCESS LEVEL: CLASSIFIED",
-      "> All actions are monitored and logged",
+      "> MISSION LOG ALPHA-3: ACTIVE",
+      "> LOCATION: Casale dei Pini",
+      "> COORDINATES: 41.9028° N, 12.4964° E",
       "",
-      "> Executing system integrity check...",
-      "> Kernel modules verified",
-      "> Rootkit scan: clean",
-      "> Timestamp: 2025-03-29T22:45:12Z",
+      "> ACCESSING FILE: /ops/redhawk/alpha3.log",
+      "> DECRYPTION COMPLETE",
+      "> Displaying tactical data feed...",
+      "> Target tracking active",
+      "> Drone recon link: STABLE",
+      "> Signal strength: 98%",
+      "> Threat level: MODERATE",
       "",
-      "> INITIATING PAYLOAD >>",
-      "> /opt/secure_ops/blackcell_vault --start",
-      "> Vault accessed - 3 protected files loaded",
-      "> Begin transmission...",
-      "",
-      "> Transmission complete.",
-      "> Session locked. Await further instruction."
+      "> Session will auto-lock in 30 seconds...",
+      "> Await further encrypted instructions"
     ];
 
     const consoleDiv = document.getElementById("console");
@@ -118,7 +132,12 @@
 
       const line = lines[lineIndex];
       if (charIndex < line.length) {
-        lineDiv.textContent += line[charIndex];
+        const char = document.createElement("span");
+        char.textContent = line[charIndex];
+        if (Math.random() < 0.05 && line[charIndex] !== ' ') {
+          char.classList.add("glitch");
+        }
+        lineDiv.appendChild(char);
         charIndex++;
         setTimeout(typeLine, 30);
       } else {
