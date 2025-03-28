@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Terminale Hacker Underground</title>
+  <title>Secure Terminal Access</title>
   <style>
     html, body {
       margin: 0;
@@ -31,6 +31,7 @@
       border-radius: 8px;
       margin: 20px auto;
       background-color: #000;
+      animation: borderGlitch 1.5s infinite;
     }
 
     .title-bar {
@@ -62,18 +63,9 @@
       }
     }
 
-    .glitch {
-      display: inline-block;
-      animation: glitch 0.3s infinite;
-    }
-
-    @keyframes glitch {
-      0% { transform: translate(0); opacity: 1; }
-      20% { transform: translate(-1px, 1px); opacity: 0.8; }
-      40% { transform: translate(1px, -1px); opacity: 1; }
-      60% { transform: translate(-1px, 0); opacity: 0.9; }
-      80% { transform: translate(1px, 1px); opacity: 1; }
-      100% { transform: translate(0); opacity: 1; }
+    @keyframes borderGlitch {
+      0%, 100% { box-shadow: 0 0 25px #00ffea; }
+      50% { box-shadow: 0 0 10px #ff0055, 0 0 20px #ff0055; border-color: #ff0055; }
     }
   </style>
 </head>
@@ -81,68 +73,62 @@
   <canvas id="matrix"></canvas>
 
   <div class="window">
-    <div class="title-bar">🕶️ Terminale Hacker Underground</div>
+    <div class="title-bar">🔒 SECURE TERMINAL - AUTHORIZED PERSONNEL ONLY</div>
     <div class="content" id="console"></div>
   </div>
 
   <script>
-    const righe = [
-      ">> Avvio sequenza non autorizzata...",
-      ">> Ingresso nel kernel in modalità stealth",
-      ">> Override firewall attivo [ █████████░░ ] 89%",
-      ">> Iniezione pacchetti spoofing in corso...",
-      ">> Accesso root @ secure.sys... ⛂ GRANTED",
+    const lines = [
+      "> SYSTEM BOOTING...",
+      "> Establishing secure connection",
+      "> Connection established with node-47.core.net",
+      "> Authenticating session... [OK]",
+      "> Decrypting message payload",
       "",
-      "+++ SYSTEM BREACH DETECTED +++",
-      ">>> Traccia log rimossa",
-      ">>> Fingerprint digitale mascherato",
-      ">>> Connessione TOR stabilita",
+      "> ACCESS LEVEL: CLASSIFIED",
+      "> All actions are monitored and logged",
       "",
-      "> Dumping hash utente...",
-      "> SHA256: 34bfe9a2b0c7dd1e5f98f...",
-      "> Scrittura exploit temporaneo in /tmp/.ghost",
+      "> Executing system integrity check...",
+      "> Kernel modules verified",
+      "> Rootkit scan: clean",
+      "> Timestamp: 2025-03-29T22:45:12Z",
       "",
-      "!!! TRASMISSIONE IN CORSO VERSO 185.45.32.91",
-      "!!! ERRORE: tempo residuo 9s prima del wipe automatico...",
+      "> INITIATING PAYLOAD >>",
+      "> /opt/secure_ops/blackcell_vault --start",
+      "> Vault accessed - 3 protected files loaded",
+      "> Begin transmission...",
       "",
-      "[Premi ESC per annullare]... troppo tardi."
+      "> Transmission complete.",
+      "> Session locked. Await further instruction."
     ];
 
     const consoleDiv = document.getElementById("console");
-    let rigaIndex = 0;
+    let lineIndex = 0;
     let charIndex = 0;
     let lineDiv;
 
-    function scrivi() {
-      if (rigaIndex >= righe.length) return;
+    function typeLine() {
+      if (lineIndex >= lines.length) return;
 
       if (charIndex === 0) {
         lineDiv = document.createElement("div");
-        lineDiv.textContent = "PS C:\\Underground> ";
+        lineDiv.textContent = ">> ";
         consoleDiv.appendChild(lineDiv);
       }
 
-      const riga = righe[rigaIndex];
-      if (charIndex < riga.length) {
-        const char = document.createElement("span");
-        char.textContent = riga[charIndex];
-
-        // Aggiungi effetto glitch randomico su alcuni caratteri
-        if (Math.random() < 0.05 && riga[charIndex] !== ' ') {
-          char.classList.add("glitch");
-        }
-
-        lineDiv.appendChild(char);
+      const line = lines[lineIndex];
+      if (charIndex < line.length) {
+        lineDiv.textContent += line[charIndex];
         charIndex++;
-        setTimeout(scrivi, 30);
+        setTimeout(typeLine, 30);
       } else {
         charIndex = 0;
-        rigaIndex++;
-        setTimeout(scrivi, 200);
+        lineIndex++;
+        setTimeout(typeLine, 200);
       }
     }
 
-    scrivi();
+    typeLine();
   </script>
 
   <script>
@@ -155,37 +141,6 @@
     }
 
     resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
-
-    const katakana = "アカサタナハマヤラワ0123456789";
-    const letters = katakana.split("");
-    const fontSize = 14;
-    let columns = canvas.width / fontSize;
-    let drops = Array.from({ length: columns }, () => 1);
-
-    function draw() {
-      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "#00ffea";
-      ctx.font = fontSize + "px monospace";
-
-      for (let i = 0; i < drops.length; i++) {
-        const text = letters[Math.floor(Math.random() * letters.length)];
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-        if (drops[i] * fontSize > canvas.height || Math.random() > 0.95) {
-          drops[i] = 0;
-        }
-
-        drops[i]++;
-      }
-    }
-
-    setInterval(draw, 33);
-  </script>
-</body>
-</html>
-
     window.addEventListener('resize', resizeCanvas);
 
     const katakana = "アカサタナハマヤラワ0123456789";
