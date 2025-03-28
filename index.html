@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Terminale Hacker</title>
+  <title>Terminale Hacker Underground</title>
   <style>
     html, body {
       margin: 0;
@@ -62,15 +62,18 @@
       }
     }
 
-    @media (min-width: 768px) {
-      .content {
-        font-size: 13px;
-        height: 450px;
-      }
+    .glitch {
+      display: inline-block;
+      animation: glitch 0.3s infinite;
+    }
 
-      .title-bar {
-        font-size: 14px;
-      }
+    @keyframes glitch {
+      0% { transform: translate(0); opacity: 1; }
+      20% { transform: translate(-1px, 1px); opacity: 0.8; }
+      40% { transform: translate(1px, -1px); opacity: 1; }
+      60% { transform: translate(-1px, 0); opacity: 0.9; }
+      80% { transform: translate(1px, 1px); opacity: 1; }
+      100% { transform: translate(0); opacity: 1; }
     }
   </style>
 </head>
@@ -78,33 +81,34 @@
   <canvas id="matrix"></canvas>
 
   <div class="window">
-    <div class="title-bar">⚡ Terminale UltraHack - Modalità Sicura</div>
+    <div class="title-bar">🕶️ Terminale Hacker Underground</div>
     <div class="content" id="console"></div>
   </div>
 
-  <!-- Audio per digitazione -->
-  <audio id="typeSound" src="https://www.soundjay.com/mechanical/keyboard-1.mp3" preload="auto"></audio>
-
   <script>
     const righe = [
-      "Accesso mobile rilevato. Sistema adattato per smartphone ✅",
-      "Benvenuto nel terminale sicuro versione responsive.",
+      ">> Avvio sequenza non autorizzata...",
+      ">> Ingresso nel kernel in modalità stealth",
+      ">> Override firewall attivo [ █████████░░ ] 89%",
+      ">> Iniezione pacchetti spoofing in corso...",
+      ">> Accesso root @ secure.sys... ⛂ GRANTED",
       "",
-      "Inizializzazione modulo mobile...",
-      "Connessione alla rete in corso...",
-      "⚠ ERRORE: rete instabile. Modalità offline attivata.",
+      "+++ SYSTEM BREACH DETECTED +++",
+      ">>> Traccia log rimossa",
+      ">>> Fingerprint digitale mascherato",
+      ">>> Connessione TOR stabilita",
       "",
-      "Ripristino da backup locale...",
-      "xxx",
-      "xxx",
-      "xxx",
-      "Terminale operativo. Tutto sotto controllo.",
-      "Fine messaggio."
+      "> Dumping hash utente...",
+      "> SHA256: 34bfe9a2b0c7dd1e5f98f...",
+      "> Scrittura exploit temporaneo in /tmp/.ghost",
+      "",
+      "!!! TRASMISSIONE IN CORSO VERSO 185.45.32.91",
+      "!!! ERRORE: tempo residuo 9s prima del wipe automatico...",
+      "",
+      "[Premi ESC per annullare]... troppo tardi."
     ];
 
     const consoleDiv = document.getElementById("console");
-    const typeSound = document.getElementById("typeSound");
-
     let rigaIndex = 0;
     let charIndex = 0;
     let lineDiv;
@@ -114,14 +118,21 @@
 
       if (charIndex === 0) {
         lineDiv = document.createElement("div");
-        lineDiv.textContent = "PS C:\\Users\\mobile> ";
+        lineDiv.textContent = "PS C:\\Underground> ";
         consoleDiv.appendChild(lineDiv);
       }
 
       const riga = righe[rigaIndex];
       if (charIndex < riga.length) {
-        lineDiv.textContent += riga[charIndex];
-        if (riga[charIndex] !== " ") typeSound.play();
+        const char = document.createElement("span");
+        char.textContent = riga[charIndex];
+
+        // Aggiungi effetto glitch randomico su alcuni caratteri
+        if (Math.random() < 0.05 && riga[charIndex] !== ' ') {
+          char.classList.add("glitch");
+        }
+
+        lineDiv.appendChild(char);
         charIndex++;
         setTimeout(scrivi, 30);
       } else {
@@ -135,7 +146,6 @@
   </script>
 
   <script>
-    // Matrix background mobile-safe
     const canvas = document.getElementById('matrix');
     const ctx = canvas.getContext('2d');
 
@@ -145,6 +155,37 @@
     }
 
     resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    const katakana = "アカサタナハマヤラワ0123456789";
+    const letters = katakana.split("");
+    const fontSize = 14;
+    let columns = canvas.width / fontSize;
+    let drops = Array.from({ length: columns }, () => 1);
+
+    function draw() {
+      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "#00ffea";
+      ctx.font = fontSize + "px monospace";
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = letters[Math.floor(Math.random() * letters.length)];
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        if (drops[i] * fontSize > canvas.height || Math.random() > 0.95) {
+          drops[i] = 0;
+        }
+
+        drops[i]++;
+      }
+    }
+
+    setInterval(draw, 33);
+  </script>
+</body>
+</html>
+
     window.addEventListener('resize', resizeCanvas);
 
     const katakana = "アカサタナハマヤラワ0123456789";
