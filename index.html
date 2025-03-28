@@ -47,3 +47,218 @@
     }
 
     @keyframes flicker {
+      0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+        opacity: 1;
+      }
+      20%, 24%, 55% {
+        opacity: 0.95;
+      }
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 8px;
+      height: 14px;
+      background: #00ffea;
+      animation: blink 1s step-start infinite;
+      vertical-align: bottom;
+    }
+
+    @keyframes blink {
+      50% { background: transparent; }
+    }
+  </style>
+</head>
+<body>
+  <div class="window">
+    <div class="title-bar">⚡ Windows PowerShell Terminal</div>
+    <div class="content" id="console"></div>
+  </div>
+
+  <script>
+    const righe = [
+      "Benvenuto nel terminale segreto.",
+      "Accesso utente: root@localhost",
+      "Stato sistema: ✅ ONLINE",
+      "",
+      "Inizializzazione modulo sicurezza...",
+      "Verifica chiavi RSA... OK",
+      "Caricamento interfaccia neurale... COMPLETATO",
+      "",
+      "xxx",
+      "xxx",
+      "xxx",
+      "xxx",
+      "xxx",
+      "xxx",
+      "xxx",
+      "xxx",
+      "xxx",
+      "xxx",
+      "",
+      "Operazione completata con successo.",
+      "PS C:\\Users\\utente>"
+    ];
+
+    const consoleDiv = document.getElementById("console");
+    let rigaIndex = 0;
+    let charIndex = 0;
+    let lineDiv;
+
+    function scrivi() {
+      if (rigaIndex >= righe.length) return;
+
+      if (charIndex === 0) {
+        lineDiv = document.createElement("div");
+        lineDiv.textContent = "PS C:\\Users\\utente> ";
+        consoleDiv.appendChild(lineDiv);
+      }
+
+      lineDiv.textContent += righe[rigaIndex][charIndex];
+      charIndex++;
+
+      if (charIndex < righe[rigaIndex].length) {
+        setTimeout(scrivi, 25);
+      } else {
+        charIndex = 0;
+        rigaIndex++;
+        setTimeout(scrivi, 150);
+      }
+    }
+
+    scrivi();
+  </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>PowerShell Hacker Style</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #0c0c0c;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      font-family: 'Consolas', monospace;
+      color: #00ffea;
+      overflow: hidden;
+    }
+
+    .window {
+      width: 900px;
+      max-width: 95vw;
+      border: 2px solid #00ffea;
+      box-shadow: 0 0 25px #00ffea;
+      border-radius: 8px;
+      overflow: hidden;
+      background-color: #000;
+    }
+
+    .title-bar {
+      background: linear-gradient(to right, #012456, #023368);
+      color: white;
+      padding: 6px 12px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .content {
+      background-color: #000000;
+      color: #00ffea;
+      padding: 20px;
+      font-size: 13px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      height: 450px;
+      overflow-y: auto;
+      animation: flicker 2s infinite;
+    }
+
+    @keyframes flicker {
+      0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+        opacity: 1;
+      }
+      20%, 24%, 55% {
+        opacity: 0.95;
+      }
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 8px;
+      height: 14px;
+      background: #00ffea;
+      animation: blink 1s step-start infinite;
+      vertical-align: bottom;
+    }
+
+    @keyframes blink {
+      50% { background: transparent; }
+    }
+  </style>
+</head>
+<body>
+  <div class="window">
+    <div class="title-bar">⚡ Windows PowerShell Terminal</div>
+    <div class="content" id="console"></div>
+  </div>
+
+  <script>
+    const righe = [
+      "Benvenuto nel terminale segreto.",
+      "Accesso utente: root@localhost",
+      "Stato sistema: ✅ ONLINE",
+      "",
+      "Inizializzazione modulo sicurezza...",
+      "Verifica chiavi RSA... OK",
+      "Caricamento interfaccia neurale... COMPLETATO",
+      "",
+      "xxx",
+      "xxx",
+      "xxx",
+      "xxx",
+      "xxx",
+      "xxx",
+      "xxx",
+      "xxx",
+      "xxx",
+      "xxx",
+      "",
+      "Operazione completata con successo.",
+      "PS C:\\Users\\utente>"
+    ];
+
+    const consoleDiv = document.getElementById("console");
+    let rigaIndex = 0;
+    let charIndex = 0;
+    let lineDiv;
+
+    function scrivi() {
+      if (rigaIndex >= righe.length) return;
+
+      if (charIndex === 0) {
+        lineDiv = document.createElement("div");
+        lineDiv.textContent = "PS C:\\Users\\utente> ";
+        consoleDiv.appendChild(lineDiv);
+      }
+
+      lineDiv.textContent += righe[rigaIndex][charIndex];
+      charIndex++;
+
+      if (charIndex < righe[rigaIndex].length) {
+        setTimeout(scrivi, 25);
+      } else {
+        charIndex = 0;
+        rigaIndex++;
+        setTimeout(scrivi, 150);
+      }
+    }
+
+    scrivi();
+  </script>
+</body>
+</html>
