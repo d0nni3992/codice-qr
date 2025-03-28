@@ -2,46 +2,53 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
-  <title>PowerShell Hacker Style</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terminale Hacker</title>
   <style>
-    body {
+    html, body {
       margin: 0;
-      background-color: #0c0c0c;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      font-family: 'Consolas', monospace;
-      color: #00ffea;
+      padding: 0;
+      height: 100%;
+      background: black;
       overflow: hidden;
+      font-family: Consolas, monospace;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 0;
     }
 
     .window {
-      width: 900px;
-      max-width: 95vw;
+      position: relative;
+      z-index: 1;
+      width: 95%;
+      max-width: 900px;
       border: 2px solid #00ffea;
       box-shadow: 0 0 25px #00ffea;
       border-radius: 8px;
-      overflow: hidden;
+      margin: 20px auto;
       background-color: #000;
     }
 
     .title-bar {
       background: linear-gradient(to right, #012456, #023368);
       color: white;
-      padding: 6px 12px;
+      padding: 10px 15px;
       font-weight: bold;
-      font-size: 14px;
+      font-size: 1rem;
     }
 
     .content {
       background-color: #000000;
       color: #00ffea;
-      padding: 20px;
-      font-size: 13px;
+      padding: 15px;
+      font-size: 1rem;
       line-height: 1.6;
       white-space: pre-wrap;
-      height: 450px;
+      height: 60vh;
       overflow-y: auto;
       animation: flicker 2s infinite;
     }
@@ -55,52 +62,49 @@
       }
     }
 
-    .cursor {
-      display: inline-block;
-      width: 8px;
-      height: 14px;
-      background: #00ffea;
-      animation: blink 1s step-start infinite;
-      vertical-align: bottom;
-    }
+    @media (min-width: 768px) {
+      .content {
+        font-size: 13px;
+        height: 450px;
+      }
 
-    @keyframes blink {
-      50% { background: transparent; }
+      .title-bar {
+        font-size: 14px;
+      }
     }
   </style>
 </head>
 <body>
+  <canvas id="matrix"></canvas>
+
   <div class="window">
-    <div class="title-bar">⚡ Windows PowerShell Terminal</div>
+    <div class="title-bar">⚡ Terminale UltraHack - Modalità Sicura</div>
     <div class="content" id="console"></div>
   </div>
 
+  <!-- Audio per digitazione -->
+  <audio id="typeSound" src="https://www.soundjay.com/mechanical/keyboard-1.mp3" preload="auto"></audio>
+
   <script>
     const righe = [
-      "Benvenuto nel terminale segreto.",
-      "Accesso utente: root@localhost",
-      "Stato sistema: ✅ ONLINE",
+      "Accesso mobile rilevato. Sistema adattato per smartphone ✅",
+      "Benvenuto nel terminale sicuro versione responsive.",
       "",
-      "Inizializzazione modulo sicurezza...",
-      "Verifica chiavi RSA... OK",
-      "Caricamento interfaccia neurale... COMPLETATO",
+      "Inizializzazione modulo mobile...",
+      "Connessione alla rete in corso...",
+      "⚠ ERRORE: rete instabile. Modalità offline attivata.",
       "",
+      "Ripristino da backup locale...",
       "xxx",
       "xxx",
       "xxx",
-      "xxx",
-      "xxx",
-      "xxx",
-      "xxx",
-      "xxx",
-      "xxx",
-      "xxx",
-      "",
-      "Operazione completata con successo.",
-      "PS C:\\Users\\utente>"
+      "Terminale operativo. Tutto sotto controllo.",
+      "Fine messaggio."
     ];
 
     const consoleDiv = document.getElementById("console");
+    const typeSound = document.getElementById("typeSound");
+
     let rigaIndex = 0;
     let charIndex = 0;
     let lineDiv;
@@ -110,155 +114,64 @@
 
       if (charIndex === 0) {
         lineDiv = document.createElement("div");
-        lineDiv.textContent = "PS C:\\Users\\utente> ";
+        lineDiv.textContent = "PS C:\\Users\\mobile> ";
         consoleDiv.appendChild(lineDiv);
       }
 
-      lineDiv.textContent += righe[rigaIndex][charIndex];
-      charIndex++;
-
-      if (charIndex < righe[rigaIndex].length) {
-        setTimeout(scrivi, 25);
+      const riga = righe[rigaIndex];
+      if (charIndex < riga.length) {
+        lineDiv.textContent += riga[charIndex];
+        if (riga[charIndex] !== " ") typeSound.play();
+        charIndex++;
+        setTimeout(scrivi, 30);
       } else {
         charIndex = 0;
         rigaIndex++;
-        setTimeout(scrivi, 150);
+        setTimeout(scrivi, 200);
       }
     }
 
     scrivi();
   </script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="it">
-<head>
-  <meta charset="UTF-8">
-  <title>PowerShell Hacker Style</title>
-  <style>
-    body {
-      margin: 0;
-      background-color: #0c0c0c;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      font-family: 'Consolas', monospace;
-      color: #00ffea;
-      overflow: hidden;
-    }
-
-    .window {
-      width: 900px;
-      max-width: 95vw;
-      border: 2px solid #00ffea;
-      box-shadow: 0 0 25px #00ffea;
-      border-radius: 8px;
-      overflow: hidden;
-      background-color: #000;
-    }
-
-    .title-bar {
-      background: linear-gradient(to right, #012456, #023368);
-      color: white;
-      padding: 6px 12px;
-      font-weight: bold;
-      font-size: 14px;
-    }
-
-    .content {
-      background-color: #000000;
-      color: #00ffea;
-      padding: 20px;
-      font-size: 13px;
-      line-height: 1.6;
-      white-space: pre-wrap;
-      height: 450px;
-      overflow-y: auto;
-      animation: flicker 2s infinite;
-    }
-
-    @keyframes flicker {
-      0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
-        opacity: 1;
-      }
-      20%, 24%, 55% {
-        opacity: 0.95;
-      }
-    }
-
-    .cursor {
-      display: inline-block;
-      width: 8px;
-      height: 14px;
-      background: #00ffea;
-      animation: blink 1s step-start infinite;
-      vertical-align: bottom;
-    }
-
-    @keyframes blink {
-      50% { background: transparent; }
-    }
-  </style>
-</head>
-<body>
-  <div class="window">
-    <div class="title-bar">⚡ Windows PowerShell Terminal</div>
-    <div class="content" id="console"></div>
-  </div>
 
   <script>
-    const righe = [
-      "Benvenuto nel terminale segreto.",
-      "Accesso utente: root@localhost",
-      "Stato sistema: ✅ ONLINE",
-      "",
-      "Inizializzazione modulo sicurezza...",
-      "Verifica chiavi RSA... OK",
-      "Caricamento interfaccia neurale... COMPLETATO",
-      "",
-      "xxx",
-      "xxx",
-      "xxx",
-      "xxx",
-      "xxx",
-      "xxx",
-      "xxx",
-      "xxx",
-      "xxx",
-      "xxx",
-      "",
-      "Operazione completata con successo.",
-      "PS C:\\Users\\utente>"
-    ];
+    // Matrix background mobile-safe
+    const canvas = document.getElementById('matrix');
+    const ctx = canvas.getContext('2d');
 
-    const consoleDiv = document.getElementById("console");
-    let rigaIndex = 0;
-    let charIndex = 0;
-    let lineDiv;
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
 
-    function scrivi() {
-      if (rigaIndex >= righe.length) return;
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
 
-      if (charIndex === 0) {
-        lineDiv = document.createElement("div");
-        lineDiv.textContent = "PS C:\\Users\\utente> ";
-        consoleDiv.appendChild(lineDiv);
-      }
+    const katakana = "アカサタナハマヤラワ0123456789";
+    const letters = katakana.split("");
+    const fontSize = 14;
+    let columns = canvas.width / fontSize;
+    let drops = Array.from({ length: columns }, () => 1);
 
-      lineDiv.textContent += righe[rigaIndex][charIndex];
-      charIndex++;
+    function draw() {
+      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "#00ffea";
+      ctx.font = fontSize + "px monospace";
 
-      if (charIndex < righe[rigaIndex].length) {
-        setTimeout(scrivi, 25);
-      } else {
-        charIndex = 0;
-        rigaIndex++;
-        setTimeout(scrivi, 150);
+      for (let i = 0; i < drops.length; i++) {
+        const text = letters[Math.floor(Math.random() * letters.length)];
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        if (drops[i] * fontSize > canvas.height || Math.random() > 0.95) {
+          drops[i] = 0;
+        }
+
+        drops[i]++;
       }
     }
 
-    scrivi();
+    setInterval(draw, 33);
   </script>
 </body>
 </html>
