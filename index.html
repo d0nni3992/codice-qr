@@ -1,192 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Secure Terminal Access</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Military Remote Terminal</title>
   <style>
     html, body {
       margin: 0;
       padding: 0;
       height: 100%;
-      background: black;
-      overflow: hidden;
-      font-family: Consolas, monospace;
+      background-color: #1a1a1a;
+      font-family: "Courier New", Courier, monospace;
+      color: #a9f1df;
     }
 
-    canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 0;
-    }
-
-    .window {
-      position: relative;
-      z-index: 1;
-      width: 95%;
+    .terminal-wrapper {
       max-width: 900px;
-      border: 2px solid #00ffea;
-      box-shadow: 0 0 25px #00ffea;
-      border-radius: 8px;
-      margin: 20px auto;
-      background-color: #000;
-      animation: borderGlitch 1.5s infinite;
+      margin: 40px auto;
+      background-color: #101010;
+      border: 1px solid #444;
+      border-radius: 6px;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
     }
 
     .title-bar {
-      background: linear-gradient(to right, #012456, #023368);
-      color: white;
-      padding: 10px 15px;
+      background-color: #2b2b2b;
+      color: #f0f0f0;
+      padding: 12px 16px;
       font-weight: bold;
-      font-size: 1rem;
+      border-bottom: 1px solid #333;
+      font-size: 14px;
+      text-transform: uppercase;
     }
 
     .content {
-      background-color: #000000;
-      color: #00ffea;
-      padding: 15px;
-      font-size: 1rem;
-      line-height: 1.6;
+      padding: 20px;
+      font-size: 14px;
+      line-height: 1.7;
       white-space: pre-wrap;
-      height: 60vh;
-      overflow-y: auto;
-      animation: flicker 2s infinite;
+      min-height: 60vh;
     }
 
-    @keyframes flicker {
-      0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
-        opacity: 1;
+    @media (max-width: 600px) {
+      .content {
+        font-size: 13px;
+        padding: 15px;
       }
-      20%, 24%, 55% {
-        opacity: 0.95;
-      }
-    }
-
-    .glitch {
-      display: inline-block;
-      animation: glitch 0.3s infinite;
-    }
-
-    @keyframes glitch {
-      0% { transform: translate(0); opacity: 1; }
-      20% { transform: translate(-1px, 1px); opacity: 0.8; }
-      40% { transform: translate(1px, -1px); opacity: 1; }
-      60% { transform: translate(-1px, 0); opacity: 0.9; }
-      80% { transform: translate(1px, 1px); opacity: 1; }
-      100% { transform: translate(0); opacity: 1; }
-    }
-
-    @keyframes borderGlitch {
-      0% { box-shadow: 0 0 25px #00ffea; border-color: #00ffea; }
-      50% { box-shadow: 0 0 15px #ff0055, 0 0 25px #ff0055; border-color: #ff0055; }
-      100% { box-shadow: 0 0 25px #00ffea; border-color: #00ffea; }
     }
   </style>
 </head>
 <body>
-  <canvas id="matrix"></canvas>
-
-  <div class="window">
-    <div class="title-bar">🔒 SECURE MILITARY TERMINAL - LEVEL 7 ACCESS</div>
+  <div class="terminal-wrapper">
+    <div class="title-bar">MILITARY REMOTE TERMINAL - AUTHORIZED ACCESS ONLY</div>
     <div class="content" id="console"></div>
   </div>
 
   <script>
     const lines = [
-      "> SYSTEM INITIALIZATION...",
-      "> SECURE PROTOCOL ENGAGED",
-      "> Linking satellite uplink... SUCCESS",
-      "> Authenticating user clearance... LEVEL 7 CONFIRMED",
-      "> Retrieving encrypted logs...",
+      "Initializing secure environment...",
+      "Loading authentication module...",
+      "Session established with central node",
+      "Log timestamp: 2025-03-29T23:42:17Z",
+      "Clearance level: LEVEL 7 CONFIRMED",
       "",
-      "> MISSION LOG ALPHA-3: ACTIVE",
-      "> LOCATION: Casale dei Pini",
-      "> COORDINATES: 41.9028° N, 12.4964° E",
+      "MISSION BRIEFING:",
+      "Operation Code: REDHAWK-ALPHA3",
+      "Location: Casale dei Pini",
+      "Coordinates: 41.9028° N, 12.4964° E",
       "",
-      "> ACCESSING FILE: /ops/redhawk/alpha3.log",
-      "> DECRYPTION COMPLETE",
-      "> Displaying tactical data feed...",
-      "> Target tracking active",
-      "> Drone recon link: STABLE",
-      "> Signal strength: 98%",
-      "> Threat level: MODERATE",
+      "Deploying encrypted tactical report...",
+      "Integrity checks: PASSED",
+      "Recon link: ESTABLISHED",
+      "Signal strength: 97%",
+      "Threat assessment: MODERATE",
       "",
-      "> Session will auto-lock in 30 seconds...",
-      "> Await further encrypted instructions"
+      "Remote surveillance module active.",
+      "Live session logging initiated.",
+      "Awaiting further encrypted instruction..."
     ];
 
     const consoleDiv = document.getElementById("console");
-    let lineIndex = 0;
-    let charIndex = 0;
-    let lineDiv;
+    let index = 0;
 
-    function typeLine() {
-      if (lineIndex >= lines.length) return;
-
-      if (charIndex === 0) {
-        lineDiv = document.createElement("div");
-        lineDiv.textContent = ">> ";
-        consoleDiv.appendChild(lineDiv);
-      }
-
-      const line = lines[lineIndex];
-      if (charIndex < line.length) {
-        const char = document.createElement("span");
-        char.textContent = line[charIndex];
-        if (Math.random() < 0.05 && line[charIndex] !== ' ') {
-          char.classList.add("glitch");
-        }
-        lineDiv.appendChild(char);
-        charIndex++;
-        setTimeout(typeLine, 30);
-      } else {
-        charIndex = 0;
-        lineIndex++;
-        setTimeout(typeLine, 200);
+    function printLine() {
+      if (index < lines.length) {
+        const line = document.createElement("div");
+        line.textContent = lines[index];
+        consoleDiv.appendChild(line);
+        index++;
+        setTimeout(printLine, 300);
       }
     }
 
-    typeLine();
-  </script>
-
-  <script>
-    const canvas = document.getElementById('matrix');
-    const ctx = canvas.getContext('2d');
-
-    function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
-
-    const katakana = "アカサタナハマヤラワ0123456789";
-    const letters = katakana.split("");
-    const fontSize = 14;
-    let columns = canvas.width / fontSize;
-    let drops = Array.from({ length: columns }, () => 1);
-
-    function draw() {
-      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "#00ffea";
-      ctx.font = fontSize + "px monospace";
-
-      for (let i = 0; i < drops.length; i++) {
-        const text = letters[Math.floor(Math.random() * letters.length)];
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-        if (drops[i] * fontSize > canvas.height || Math.random() > 0.95) {
-          drops[i] = 0;
-        }
-
-        drops[i]++;
-      }
-    }
-
-    setInterval(draw, 33);
+    printLine();
   </script>
 </body>
 </html>
